@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>Acuda App</title>
+
+        
+        <!-- Bootstrap core CSS -->
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        <!-- Bootstrap theme -->
+        <!--<link href="css/bootstrap-theme.min.css" rel="stylesheet">-->   
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
+        <!-- BootstrapValidator CSS -->
+        <link rel="stylesheet" href="http://cdn.jsdelivr.net/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css"/>
+        
+        <!-- local CSS -->
+        <link rel="stylesheet" href="css/main.nic.css">
+        
+        
+        
+        <!-- Latest compiled and minified JavaScript -->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        
+        <!-- Modernizr -->        
+        <script src="js/modernizr.custom.62932.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            /*
+        // 1)  verificar si el browser soporta localStorage 
+            if (Modernizr.localstorage) {
+              // window.localStorage is available!
+                
+            } else {
+              // no native support for HTML5 storage :(
+              // maybe try dojox.storage or a third-party solution
+                alert("No native support for HTML5 storage :(");
+            }            
+            console.log("entra Modernizr");
+            */ 
+            
+/*            
+        // 2)  leer datos externos 
+        $.ajax({
+            url: 'http://your-app.com/api/news/12',
+            dataType: 'JSONp',
+            success: function(data, status) {
+                $.each(data, function(key, value){
+                    //handle the data                
+                });
+            },
+            error: function() {
+                //handle the error
+            }
+        }
+*/               
+               //
+        </script>
+        
+
+        <!-- Phonegap -->
+        <!--<script type="text/javascript" charset="utf-8" src="js/cordova-1.5.0.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/phonegap-1.4.1.js"></script>-->
+        
+        <!--  -->
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
+        
+        <!--  -->
+        <script type="text/javascript" charset="utf-8">
+
+        // Wait for PhoneGap to load  --> ??
+        //
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // PhoneGap is ready
+        //
+        function onDeviceReady() {            
+            /*
+            window.localStorage.setItem("key", "value");
+            var keyname = window.localStorage.key(i);
+            // keyname is now equal to "key"
+            var value = window.localStorage.getItem("key");
+            // value is now equal to "value"
+            window.localStorage.removeItem("key");
+            window.localStorage.setItem("key2", "value2");
+            window.localStorage.clear();
+            // localStorage is now empty
+            */
+            console.log("entra onDeviceReady");
+            
+            // leer datos almacenados para cargar variables             
+            // cargar valores previamente 
+            var cliente = document.getElementById("inputCliente");
+            cliente.value = window.localStorage.getItem("cliente");
+            //idClie.value = "nicolasito";
+            var nombre = document.getElementById("inputNombre");
+            nombre.value = window.localStorage.getItem("nombre");
+            document.getElementById("inputApellido").value = window.localStorage.getItem("apellido");
+            document.getElementById("inputCelular").value = window.localStorage.getItem("celular");
+            document.getElementById("inputDir1").value = window.localStorage.getItem("direc1");
+            document.getElementById("inputDir2").value = window.localStorage.getItem("direc2");
+            document.getElementById("inputDir3").value = window.localStorage.getItem("direc3"); 
+            
+            if ( cliente.value === '' ) {
+                console.log("cliente vacio");
+                $('#myTab a[href="#profile"]').tab('show'); 
+                //$('#myTab a[href="#home"]').removeClass('active');
+                //$('#myTab a[href="#profile"]').addClass('active');
+            } else {
+                console.log("cliente tiene datos "+cliente.value);
+            }
+            
+            // - Cargar direcciones guardadas en localStorage 
+            $('#selDirec').append($('<option>', {
+                value: 1,
+                text: window.localStorage.getItem("direc1")
+                                    }));
+            $('#selDirec').append($('<option>', {
+                value: 2,
+                text: window.localStorage.getItem("direc2")
+                                    }));
+            $('#selDirec').append($('<option>', {
+                value: 3,
+                text: window.localStorage.getItem("direc3")
+                                    }));
+            
+        }
+            
+        function save_config()  { 
+            // verificar que todos los campos esten completos. 
+            console.log("guardando...."+document.getElementById("inputCliente").value); 
+            
+            // validar los datos ingresados. 
+            
+            // guardar configuracion 
+            window.localStorage.setItem("cliente", document.getElementById("inputCliente").value);
+            window.localStorage.setItem("nombre", document.getElementById("inputNombre").value);
+            window.localStorage.setItem("apellido", document.getElementById("inputApellido").value);
+            window.localStorage.setItem("celular", document.getElementById("inputCelular").value);
+            window.localStorage.setItem("direc1", document.getElementById("inputDir1").value);
+            window.localStorage.setItem("direc2", document.getElementById("inputDir2").value);
+            window.localStorage.setItem("direc3", document.getElementById("inputDir3").value);
+        }
+            
+        
+        function verData() {
+            var value = window.localStorage.getItem("cliente");
+            console.log("localstorage cliente: "+value);
+        }
+        
+        function borrarStorage() {
+            // blanquear datos guardados en localStorage 
+            window.localStorage.clear();
+        }
+            
+        // cambiar Navs cuando presionamos 
+        $('#myTab a[href="#profile"]').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#myTab a[href="#home"]').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        }); 
+            
+            
+        // ---- eliminar 
+        console.log("Name: "+window.localStorage.getItem("nombre"));
+        //verData();
+        //onDeviceReady();
+            
+            
+        // validaciones de campos 
+        // --- 
+        $(document).ready( function() {
+            console.log("ready antes de validator"); 
+            onDeviceReady();
+            
+            $('#registerForm').bootstrapValidator({
+                container: '#messko',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                submitButtons: 'button[type="submit"]',
+                fields: {
+                    cliente: {
+                        validators: {
+                            notEmpty: {
+                                message: 'ID Cliente es obligatorio.'
+                            }
+                        }
+                    },
+                    nombre: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Campo Nombre es obligatorio.'
+                            }
+                        }
+                    },
+                    apellido: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Campo Apellido es obligatorio.'
+                            }
+                        }
+                    },
+                    celular: {
+                        validators: {
+                            digits: {
+                                message: 'N&uacute;mero de celular puede contener solo dígitos.'
+                            },
+                            notEmpty: {
+                                message: 'N&uacute;mero de celular obligatorio.'
+                            }
+                        }
+                    },
+                    dir1: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Campo Direcci&oacute; 1 es obligatorio.'
+                            }
+                        }
+                    },
+                    dir2: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Campo Direcci&oacute; 2 es obligatorio.'
+                            }
+                        }
+                    },
+                    dir3: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Campo Direcci&oacute; 3 es obligatorio.'
+                            }
+                        }
+                    }
+                } // fields 
+            })  // validator 
+            
+            .on('error.validator.bv', function(e, data) {
+                // $(e.target)    --> The form instance
+                // data.field     --> The field name
+                // data.element   --> The field element
+                // data.validator --> The validator name
+
+                // Do something ...
+                // si hubo errores matener nav Profile. 
+                $('#myTab a[href="#profile"]').tab('show');                
+            })
+
+            .on('success.validator.bv', function(e, data) {
+                // The e parameter is the same as one
+                // in the error.validator.bv event above
+
+                // Do something ...
+                // si NO hubo errores, guardar y mostrar nav Home. 
+                save_config();   
+                // mostrar mensaje OK 
+                //$('#mess-ok').addClass('in');
+                $('#alert-mess-ok').hide();
+            });        
+            
+            
+        }  // function 
+        );
+            
+        $("#alert-mess-ok").hide(); 
+        $('#alert-mess-ok').addClass('hidden');
+        $('#alert-mess-ok').removeClass('hidden');
+        
+        console.log("luego de remove hidden");
+            
+        $(".alert").alert();
+            
+
+        </script>
+        
+
+    </head>
+    
+    <body role="document">
+        
+        <!-- Barra Nav -->
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container-fluid" id="titulo">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Home Safe</a>
+                    <!--<ul class="nav navbar-nav" role="tablist">
+                        <li><h3></h3>
+                        <p>(Un servicio de MABRI S.A.)</p></li>
+                    </ul>-->
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav nav-pills navbar-right" role="tablist" id="optionsTab">
+                      <li class="active"><a href="#home" role="tab" data-toggle="pill"><img src="img/1409723010_alarm-24.png" alt="" class="img-responsive"></a></li>
+                      <li><a href="#profile" role="tab" data-toggle="pill"><img src="img/1409723233_settings-24-24.png" alt="" class="img-responsive"></a></li>
+                    </ul>                
+                </div>
+
+            </div>
+        </div>
+        
+        
+        
+                <div id="alert-mess-ok" class="alert alert-success alert-block hidden" >
+                    <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+                    <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+                </div>          
+        
+        
+        <div class="tab-content">
+            <!-- Mensajes -->
+          
+            <div class="container-fluid">
+
+                <div class="alert alert-danger hidden" role="alert" id="messko">
+                    <!--<strong>Oh snap!</strong> Error al guardar sus datos.-->
+                </div>            
+            </div>
+            
+            <!-- Panel Envio Alerta -->
+            <div class="tab-pane active" id="home">
+                <div class="container-fluid" id="pedir">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="col-xs-2 control-label">Direcci&oacute;n:</label>
+                            <div class="col-xs-10">
+                                <select class="form-control" id="selDirec" name="selDirec">
+<!--                                    <option>direc.1</option>
+                                    <option>direc.2</option>
+                                    <option>direc.3</option>-->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group">
+                            <label for="exampleInputPassword1" class="col-xs-2 control-label">Tiempo:</label>
+                            <div class="col-xs-10">
+                                <input type="time" class="form-control" id="inputTime" placeholder="">
+                            </div>
+                        </div>
+                        <p>O</p>-->
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="col-xs-2 control-label">Tiempo:</label>
+                            <div class="col-xs-10">
+                                <select class="form-control" id="selDirec">
+                                    <option>10 min</option>
+                                    <option>15 min</option>
+                                    <option>20 min</option>
+                                    <option>25 min</option>
+                                    <option>30 min</option>
+                                    <option>40 min</option>
+                                    <option>50 min</option>
+                                    <option>60 min</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-offset-5 col-xs-7">
+                            <button type="button" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Panel Carga Datos / configuracion /  has-error -->
+            <div class="tab-pane" id="profile">
+                <div class="container-fluid" id="setup">
+                    <h4>Complete la siguiente informaci&oacute;n por &uacute;nica vez:</h4>
+                    <form id="registerForm" class="form-horizontal" role="form" method="post">
+                        <!-- #messages is where the messages are placed inside -->
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <div id="messko"></div>
+                            </div>
+                        </div>   
+                        
+                        <div class="form-group">
+                            <label for="lbidcliente" class="col-xs-2 control-label">Id.Cliente</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="inputCliente" name="cliente"name placeholder="Enter ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lbnombre" class="col-xs-2 control-label">Nombre</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="inputNombre" name="nombre" placeholder="Enter Nombre">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lbapellido" class="col-xs-2 control-label">Apellido</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Enter Apellido">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lbcelular" class="col-xs-2 control-label">Celular</label>
+                            <div class="col-xs-10">
+                                <input type="tel" class="form-control" id="inputCelular" name="celular" placeholder="Nro Celular">
+                            </div>
+                        </div>
+
+                        <h4>Direcciones de acuda:</h4>
+                        <div class="form-group">
+                            <label for="lbdir1" class="col-xs-2 control-label">Dir 1</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="inputDir1" name="dir1" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lbdir2" class="col-xs-2 control-label">Dir 2</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="inputDir2" name="dir2" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lbdir3" class="col-xs-2 control-label">Dir 3</label>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="inputDir3" name="dir3" placeholder="">
+                            </div>
+                        </div>
+                      <!--<div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" id="exampleInputFile">
+                        <p class="help-block">Example block-level help text here.</p>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Check me out
+                        </label>
+                      </div>-->
+                        <div class="col-xs-offset-5 col-xs-7">
+                            <button type="submit" class="btn btn-primary" >Guardar</button>  <!-- onclick="save_config()" -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+                
+        
+
+
+            <!-- Botones -->
+            <div class="container-fluid" id="exec">
+                <div class="col-xs-offset-5 col-xs-7">
+                    <button type="button" class="btn btn-primary" onclick="borrarStorage()">Borrar Storage</button>
+                    <button type="button" class="btn btn-primary hidden">Salir</button>
+                </div>
+            </div>
+                    
+        </div> 
+        
+        <script type="text/javascript" charset="utf-8">
+            //aca puedo cargar los valores del localStorage en los campos. 
+            //onDeviceReady();
+        </script>
+        
+    </body>
+</html>
+        
