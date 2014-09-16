@@ -73,6 +73,20 @@
         
         <!--  -->
         <script type="text/javascript" charset="utf-8">
+            
+        // 
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
 
         // Wait for PhoneGap to load  --> ??
         //
@@ -109,11 +123,15 @@
             
             if ( cliente.value === '' ) {
                 console.log("cliente vacio");
-                $('#myTab a[href="#profile"]').tab('show'); 
-                //$('#myTab a[href="#home"]').removeClass('active');
-                //$('#myTab a[href="#profile"]').addClass('active');
+                // mostrar tab para cargar datos de configuracion 
+                $('#li-profile').addClass('active');
+                $('#profile').addClass('active');
+                $('#home').removeClass('active');
             } else {
                 console.log("cliente tiene datos "+cliente.value);
+                $('#li-home').addClass('active');
+                //$('#alert-mess-ok').removeClass('hidden');  
+                //$('#alert-mess-ok').addClass('in');
             }
             
             // - Cargar direcciones guardadas en localStorage 
@@ -132,6 +150,7 @@
             
         }
             
+        // - 
         function save_config()  { 
             // verificar que todos los campos esten completos. 
             console.log("guardando...."+document.getElementById("inputCliente").value); 
@@ -146,6 +165,9 @@
             window.localStorage.setItem("direc1", document.getElementById("inputDir1").value);
             window.localStorage.setItem("direc2", document.getElementById("inputDir2").value);
             window.localStorage.setItem("direc3", document.getElementById("inputDir3").value);
+            
+            $('#alert-mess-ok').removeClass('hidden');          
+            //$('#alert-mess-ok').addClass('in');
         }
             
         
@@ -170,17 +192,21 @@
         }); 
             
             
-        // ---- eliminar 
-        console.log("Name: "+window.localStorage.getItem("nombre"));
-        //verData();
-        //onDeviceReady();
-            
-            
         // validaciones de campos 
         // --- 
         $(document).ready( function() {
             console.log("ready antes de validator"); 
             onDeviceReady();
+            /*var send = GetURLParameter('send');
+            var save = GetURLParameter('save');
+            if (send === 'ok') {
+                //$('#alert-mess-ok').addClass('in');
+                $('#alert-sent-ok').removeClass('hidden'); 
+            }
+            if (save === 'ok') { 
+                //$('#alert-sent-ok').addClass('in');
+                $('#alert-save-ok').removeClass('hidden');
+            }*/
             
             $('#registerForm').bootstrapValidator({
                 container: '#messko',
@@ -257,7 +283,7 @@
                 $('#myTab a[href="#profile"]').tab('show');                
             })
 
-            .on('success.validator.bv', function(e, data) {
+            .on('success.form.bv', function(e) {
                 // The e parameter is the same as one
                 // in the error.validator.bv event above
 
@@ -265,14 +291,14 @@
                 // si NO hubo errores, guardar y mostrar nav Home. 
                 save_config();   
                 // mostrar mensaje OK 
-                //$('#mess-ok').addClass('in');
-                $('#alert-mess-ok').hide();
+                e.preventDefault();
             });        
             
             
         }  // function 
         );
             
+        /* // ELIMINAR 
         $("#alert-mess-ok").hide(); 
         $('#alert-mess-ok').addClass('hidden');
         $('#alert-mess-ok').removeClass('hidden');
@@ -280,7 +306,15 @@
         console.log("luego de remove hidden");
             
         $(".alert").alert();
-            
+        */
+        
+        // --- --- 
+        $("#form-alerta").submit(function( event ) {
+            alert( "Handler for .submit() called." );
+            console.log("envio alerta");
+            event.preventDefault();
+            // enviar 
+        });
 
         </script>
         
@@ -307,8 +341,8 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav nav-pills navbar-right" role="tablist" id="optionsTab">
-                      <li class="active"><a href="#home" role="tab" data-toggle="pill"><img src="img/1409723010_alarm-24.png" alt="" class="img-responsive"></a></li>
-                      <li><a href="#profile" role="tab" data-toggle="pill"><img src="img/1409723233_settings-24-24.png" alt="" class="img-responsive"></a></li>
+                      <li id="li-home"><a href="#home" role="tab" data-toggle="pill"><img src="img/1409723010_alarm-24.png" alt="" class="img-responsive"></a></li>
+                      <li id="li-profile"><a href="#profile" role="tab" data-toggle="pill"><img src="img/1409723233_settings-24-24.png" alt="" class="img-responsive"></a></li>
                     </ul>                
                 </div>
 
@@ -316,19 +350,25 @@
         </div>
         
         
-        
-                <div id="alert-mess-ok" class="alert alert-success alert-block hidden" >
-                    <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
-                    <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
-                </div>          
+        <div class="container-fluid">
+        <div id="alert-mess-ok" class="alert alert-success alert-block hidden" >
+            <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+            <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+            Datos guardados.
+        </div>    
+        <div id="alert-sent-ok" class="alert alert-success alert-block hidden" >
+            <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+            <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+            Alerta enviada.
+        </div> 
+        </div>
         
         
         <div class="tab-content">
             <!-- Mensajes -->
           
             <div class="container-fluid">
-
-                <div class="alert alert-danger hidden" role="alert" id="messko">
+                <div class="alert alert-danger hidden" role="alert" id="alert-messko">
                     <!--<strong>Oh snap!</strong> Error al guardar sus datos.-->
                 </div>            
             </div>
@@ -336,25 +376,16 @@
             <!-- Panel Envio Alerta -->
             <div class="tab-pane active" id="home">
                 <div class="container-fluid" id="pedir">
-                    <form class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form" method="post" action="?send=ok" id="form-alerta">
+                    <!--<form class="form-horizontal" role="form" id="form-alerta">-->
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="col-xs-2 control-label">Direcci&oacute;n:</label>
                             <div class="col-xs-10">
                                 <select class="form-control" id="selDirec" name="selDirec">
-<!--                                    <option>direc.1</option>
-                                    <option>direc.2</option>
-                                    <option>direc.3</option>-->
                                 </select>
                             </div>
                         </div>
 
-                        <!--<div class="form-group">
-                            <label for="exampleInputPassword1" class="col-xs-2 control-label">Tiempo:</label>
-                            <div class="col-xs-10">
-                                <input type="time" class="form-control" id="inputTime" placeholder="">
-                            </div>
-                        </div>
-                        <p>O</p>-->
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="col-xs-2 control-label">Tiempo:</label>
                             <div class="col-xs-10">
@@ -372,7 +403,8 @@
                         </div>
 
                         <div class="col-xs-offset-5 col-xs-7">
-                            <button type="button" class="btn btn-primary">Enviar</button>
+                            <!--<button type="submit" class="btn btn-primary" id="btn-send">Enviar</button>-->
+                            <input type="submit" class="btn btn-primary" id="btn-send">
                         </div>
                     </form>
                 </div>
@@ -382,7 +414,7 @@
             <div class="tab-pane" id="profile">
                 <div class="container-fluid" id="setup">
                     <h4>Complete la siguiente informaci&oacute;n por &uacute;nica vez:</h4>
-                    <form id="registerForm" class="form-horizontal" role="form" method="post">
+                    <form id="registerForm" class="form-horizontal" role="form" method="post" action="?save=ok">
                         <!-- #messages is where the messages are placed inside -->
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
