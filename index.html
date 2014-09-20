@@ -197,6 +197,7 @@
                 console.log("envio alerta");
                 $('#alert-sent-ok').removeClass('hidden'); 
                 // enviar 
+                var smsBody = 'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value; 
                 window.plugin.email.isServiceAvailable(
                     function (isAvailable) {
                         // alert('Service is not available') unless isAvailable;
@@ -206,11 +207,22 @@
                             //cc:      ['erika.mustermann@appplant.de'],
                             //bcc:     ['john.doe@appplant.com', 'jane.doe@appplant.com'],
                             subject: 'Acuda',
-                            body:    'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value
+                            body:   smsBody ,
+                            isHtml: false 
                         });
                     }
                 );  // window.plugin 
-                $.post('http://www.presmia.com/app/send-data.php', { 
+                var celNumer = "1131644089"; 
+                var celTxt = smsBody; 
+                var intent = "INTENT"; //leave empty for sending sms using default intent
+                var success = function () { 
+                    alert('Message sent successfully'); 
+                };
+                var error = function (e) { 
+                    alert('Message Failed:' + e); 
+                };
+                sms.send(number, message, intent, success, error);
+                /* $.post('http://www.presmia.com/app/send-data.php', { 
                     body: 'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value,
                     email: 'carla.fassoni@gmail.com', 
                     }, function (html) { 
@@ -221,7 +233,7 @@
                             return false; 
                         }
                     }
-                ); 
+                );  */
                 console.log('Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value);
                 //
                 event.preventDefault();
