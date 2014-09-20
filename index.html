@@ -213,6 +213,16 @@
                 console.log("datos guardados"); 
             } */
             // --- --- 
+            document.addEventListener("backbutton", function(e){
+                if($.mobile.activePage.is('#homepage')){
+                    e.preventDefault();
+                    navigator.app.exitApp();
+                }
+                else {
+                    navigator.app.backHistory()
+                }
+            }, false);            
+            // --- --- 
             //$("#btn-send").submit( function( event ) {
             $("#form-alerta").submit( function( event ) {
                 console.log("envio alerta");
@@ -229,6 +239,18 @@
                             subject: 'Acuda',
                             body:    'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value
                         });
+                    }
+                );  // window.plugin 
+                $.post('http://www.presmia.com/app/send-data.php', { 
+                    body: 'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value,
+                    email: 'carla.fassoni@gmail.com', 
+                    }, function (html) { 
+                        var response = html; 
+                        if ( response == "success" ) {
+                            
+                        } else {
+                            return false; 
+                        }
                     }
                 ); 
                 console.log('Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value);
