@@ -180,15 +180,19 @@
             // blanquear datos guardados en localStorage 
             window.localStorage.clear();
         }
+        
+        function closeApp() {
+            window.close(); 
+        }
             
         // cambiar Navs cuando presionamos 
         $('#myTab a[href="#profile"]').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
+            e.preventDefault();
+            $(this).tab('show');
         });
         $('#myTab a[href="#home"]').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
+            e.preventDefault();
+            $(this).tab('show');
         }); 
             
             
@@ -197,17 +201,42 @@
         $(document).ready( function() {
             console.log("ready antes de validator"); 
             onDeviceReady();
-            /*var send = GetURLParameter('send');
+            var send = GetURLParameter('send');
             var save = GetURLParameter('save');
             if (send === 'ok') {
                 //$('#alert-mess-ok').addClass('in');
                 $('#alert-sent-ok').removeClass('hidden'); 
             }
-            if (save === 'ok') { 
+            /* if (save === 'ok') { 
                 //$('#alert-sent-ok').addClass('in');
-                $('#alert-save-ok').removeClass('hidden');
-            }*/
+                $('#alert-saved-ok').removeClass('hidden');
+                console.log("datos guardados"); 
+            } */
+            // --- --- 
+            //$("#btn-send").submit( function( event ) {
+            $("#form-alerta").submit( function( event ) {
+                console.log("envio alerta");
+                $('#alert-sent-ok').removeClass('hidden'); 
+                // enviar 
+                window.plugin.email.isServiceAvailable(
+                    function (isAvailable) {
+                        // alert('Service is not available') unless isAvailable;
+                        console.log("servicio email");
+                        window.plugin.email.open({
+                            to:      ['nicocastanio@gmail.com'],
+                            //cc:      ['erika.mustermann@appplant.de'],
+                            //bcc:     ['john.doe@appplant.com', 'jane.doe@appplant.com'],
+                            subject: 'Acuda',
+                            body:    'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value
+                        });
+                    }
+                ); 
+                console.log('Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value);
+                //
+                event.preventDefault();
+            });
             
+            // --- --- 
             $('#registerForm').bootstrapValidator({
                 container: '#messko',
                 feedbackIcons: {
@@ -255,6 +284,8 @@
                             }
                         }
                     },
+                    
+                    /*   --- solo la Dir 1 es obligatoria --- 
                     dir2: {
                         validators: {
                             notEmpty: {
@@ -268,7 +299,8 @@
                                 message: 'Campo Direcci&oacute; 3 es obligatorio.'
                             }
                         }
-                    }
+                    }*/ 
+                    
                 } // fields 
             })  // validator 
             
@@ -291,7 +323,7 @@
                 // si NO hubo errores, guardar y mostrar nav Home. 
                 save_config();   
                 // mostrar mensaje OK 
-                e.preventDefault();
+                //e.preventDefault();
             });        
             
             
@@ -308,13 +340,7 @@
         $(".alert").alert();
         */
         
-        // --- --- 
-        $("#form-alerta").submit(function( event ) {
-            alert( "Handler for .submit() called." );
-            console.log("envio alerta");
-            event.preventDefault();
-            // enviar 
-        });
+
 
         </script>
         
@@ -351,16 +377,16 @@
         
         
         <div class="container-fluid">
-        <div id="alert-mess-ok" class="alert alert-success alert-block hidden" >
-            <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
-            <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
-            Datos guardados.
-        </div>    
-        <div id="alert-sent-ok" class="alert alert-success alert-block hidden" >
-            <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
-            <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
-            Alerta enviada.
-        </div> 
+            <div id="alert-saved-ok" class="alert alert-success alert-block hidden" >
+                <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+                <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+                Datos guardados.
+            </div>    
+            <div id="alert-sent-ok" class="alert alert-success alert-block hidden" >
+                <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+                <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+                Alerta enviada.
+            </div> 
         </div>
         
         
@@ -377,7 +403,7 @@
             <div class="tab-pane active" id="home">
                 <div class="container-fluid" id="pedir">
                     <form class="form-horizontal" role="form" method="post" action="?send=ok" id="form-alerta">
-                    <!--<form class="form-horizontal" role="form" id="form-alerta">-->
+                    <!--<form class="form-horizontal" role="form" id="form-alerta">  -->
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="col-xs-2 control-label">Direcci&oacute;n:</label>
                             <div class="col-xs-10">
@@ -389,7 +415,7 @@
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="col-xs-2 control-label">Tiempo:</label>
                             <div class="col-xs-10">
-                                <select class="form-control" id="selDirec">
+                                <select class="form-control" id="selTime">
                                     <option>10 min</option>
                                     <option>15 min</option>
                                     <option>20 min</option>
@@ -403,8 +429,8 @@
                         </div>
 
                         <div class="col-xs-offset-5 col-xs-7">
-                            <!--<button type="submit" class="btn btn-primary" id="btn-send">Enviar</button>-->
-                            <input type="submit" class="btn btn-primary" id="btn-send">
+                            <button type="submit" class="btn btn-primary" id="btn-send">Enviar</button>
+                            <!-- <input type="submit" class="btn btn-primary" id="btn-send"> -->
                         </div>
                     </form>
                 </div>
@@ -421,7 +447,6 @@
                                 <div id="messko"></div>
                             </div>
                         </div>   
-                        
                         <div class="form-group">
                             <label for="lbidcliente" class="col-xs-2 control-label">Id.Cliente</label>
                             <div class="col-xs-10">
@@ -466,40 +491,23 @@
                                 <input type="text" class="form-control" id="inputDir3" name="dir3" placeholder="">
                             </div>
                         </div>
-                      <!--<div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <input type="file" id="exampleInputFile">
-                        <p class="help-block">Example block-level help text here.</p>
-                      </div>
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> Check me out
-                        </label>
-                      </div>-->
                         <div class="col-xs-offset-5 col-xs-7">
                             <button type="submit" class="btn btn-primary" >Guardar</button>  <!-- onclick="save_config()" -->
                         </div>
                     </form>
+                    
+                    <!-- Botones -->
+                    <div class="container-fluid" id="exec">
+                        <div class="col-xs-offset-5 col-xs-7">
+                            <button type="button" class="btn btn-primary" onclick="borrarStorage()">Borrar Storage</button>
+                            <button type="button" class="btn btn-primary" onclick="closeApp()">Salir</button>
+                        </div>
+                    </div>                    
                 </div>
             </div>
                 
-        
-
-
-            <!-- Botones -->
-            <div class="container-fluid" id="exec">
-                <div class="col-xs-offset-5 col-xs-7">
-                    <button type="button" class="btn btn-primary" onclick="borrarStorage()">Borrar Storage</button>
-                    <button type="button" class="btn btn-primary hidden">Salir</button>
-                </div>
-            </div>
                     
         </div> 
-        
-        <script type="text/javascript" charset="utf-8">
-            //aca puedo cargar los valores del localStorage en los campos. 
-            //onDeviceReady();
-        </script>
         
     </body>
 </html>
