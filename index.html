@@ -27,325 +27,16 @@
         <!-- Latest compiled and minified JavaScript -->
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        
-        <!-- Modernizr -->        
-        <script src="js/modernizr.custom.62932.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>  
 
         <!-- Phonegap -->
-        <!--<script type="text/javascript" charset="utf-8" src="js/cordova-1.5.0.js"></script>
-        <script type="text/javascript" charset="utf-8" src="js/phonegap-1.4.1.js"></script>-->
         <script type="text/javascript" src="phonegap.js"></script>
         
         <!--  -->
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
         
         <!--  -->
-        <script type="text/javascript" charset="utf-8">
-            
-        // 
-        function GetURLParameter(sParam) {
-            var sPageURL = window.location.search.substring(1);
-            var sURLVariables = sPageURL.split('&');
-            for (var i = 0; i < sURLVariables.length; i++)
-            {
-                var sParameterName = sURLVariables[i].split('=');
-                if (sParameterName[0] == sParam)
-                {
-                    return sParameterName[1];
-                }
-            }
-        }
-
-        // Wait for PhoneGap to load  --> ??
-        //
-        document.addEventListener("deviceready", onDeviceReady, false);
-
-        // PhoneGap is ready
-        //
-        function onDeviceReady() {            
-            /*
-            window.localStorage.setItem("key", "value");
-            var keyname = window.localStorage.key(i);
-            // keyname is now equal to "key"
-            var value = window.localStorage.getItem("key");
-            // value is now equal to "value"
-            window.localStorage.removeItem("key");
-            window.localStorage.setItem("key2", "value2");
-            window.localStorage.clear();
-            // localStorage is now empty
-            */
-            console.log("entra onDeviceReady");
-            
-            // leer datos almacenados para cargar variables             
-            // cargar valores previamente 
-            var cliente = document.getElementById("inputCliente");
-            cliente.value = window.localStorage.getItem("cliente");
-            //idClie.value = "nicolasito";
-            var nombre = document.getElementById("inputNombre");
-            nombre.value = window.localStorage.getItem("nombre");
-            document.getElementById("inputApellido").value = window.localStorage.getItem("apellido");
-            document.getElementById("inputCelular").value = window.localStorage.getItem("celular");
-            document.getElementById("inputDir1").value = window.localStorage.getItem("direc1");
-            document.getElementById("inputDir2").value = window.localStorage.getItem("direc2");
-            document.getElementById("inputDir3").value = window.localStorage.getItem("direc3"); 
-            
-            if ( cliente.value === '' ) {
-                console.log("cliente vacio");
-                // mostrar tab para cargar datos de configuracion 
-                $('#li-profile').addClass('active');
-                $('#profile').addClass('active');
-                $('#home').removeClass('active');
-            } else {
-                console.log("cliente tiene datos "+cliente.value);
-                $('#li-home').addClass('active');
-                //$('#alert-mess-ok').removeClass('hidden');  
-                //$('#alert-mess-ok').addClass('in');
-            }
-            
-            // - Cargar direcciones guardadas en localStorage 
-            $('#selDirec').append($('<option>', {
-                value: 1,
-                text: window.localStorage.getItem("direc1")
-                                    }));
-            $('#selDirec').append($('<option>', {
-                value: 2,
-                text: window.localStorage.getItem("direc2")
-                                    }));
-            $('#selDirec').append($('<option>', {
-                value: 3,
-                text: window.localStorage.getItem("direc3")
-                                    }));
-            
-        }
-            
-        // - 
-        function save_config()  { 
-            // verificar que todos los campos esten completos. 
-            console.log("guardando...."+document.getElementById("inputCliente").value); 
-            
-            // validar los datos ingresados. 
-            
-            // guardar configuracion 
-            window.localStorage.setItem("cliente", document.getElementById("inputCliente").value);
-            window.localStorage.setItem("nombre", document.getElementById("inputNombre").value);
-            window.localStorage.setItem("apellido", document.getElementById("inputApellido").value);
-            window.localStorage.setItem("celular", document.getElementById("inputCelular").value);
-            window.localStorage.setItem("direc1", document.getElementById("inputDir1").value);
-            window.localStorage.setItem("direc2", document.getElementById("inputDir2").value);
-            window.localStorage.setItem("direc3", document.getElementById("inputDir3").value);
-            
-            $('#alert-mess-ok').removeClass('hidden');          
-            //$('#alert-mess-ok').addClass('in');
-        }
-            
-        
-        function verData() {
-            var value = window.localStorage.getItem("cliente");
-            console.log("localstorage cliente: "+value);
-        }
-        
-        function borrarStorage() {
-            // blanquear datos guardados en localStorage 
-            window.localStorage.clear();
-        }
-        
-        function closeApp() {
-            window.close(); 
-        }
-            
-        // cambiar Navs cuando presionamos 
-        $('#myTab a[href="#profile"]').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-        $('#myTab a[href="#home"]').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        }); 
-            
-            
-        // validaciones de campos 
-        // --- 
-        $(document).ready( function() {
-            console.log("ready antes de validator"); 
-            onDeviceReady();
-            var send = GetURLParameter('send');
-            var save = GetURLParameter('save');
-            if (send === 'ok') {
-                //$('#alert-mess-ok').addClass('in');
-                $('#alert-sent-ok').removeClass('hidden'); 
-            }
-            /* if (save === 'ok') { 
-                //$('#alert-sent-ok').addClass('in');
-                $('#alert-saved-ok').removeClass('hidden');
-                console.log("datos guardados"); 
-            } */
-            // --- --- 
-            document.addEventListener("backbutton", function(e){
-                if($.mobile.activePage.is('#homepage')){
-                    e.preventDefault();
-                    navigator.app.exitApp();
-                }
-                else {
-                    navigator.app.backHistory()
-                }
-            }, false);            
-            // --- --- 
-            //$("#btn-send").submit( function( event ) {
-            $("#form-alerta").submit( function( event ) {
-                console.log("envio alerta");
-                $('#alert-sent-ok').removeClass('hidden'); 
-                // enviar 
-                var smsBody = 'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value; 
-                window.plugin.email.isServiceAvailable(
-                    function (isAvailable) {
-                        // alert('Service is not available') unless isAvailable;
-                        console.log("servicio email");
-                        window.plugin.email.open({
-                            to:      ['nicocastanio@gmail.com','sebaali07@gmail.com'],
-                            //cc:      ['erika.mustermann@appplant.de'],
-                            //bcc:     ['john.doe@appplant.com', 'jane.doe@appplant.com'],
-                            subject: 'Acuda',
-                            body:   smsBody ,
-                            isHtml: false 
-                        });
-                    }
-                );  // window.plugin 
-                var celNumer = "1131644089"; 
-                var celTxt = smsBody; 
-                var intent = "INTENT"; //leave empty for sending sms using default intent
-                var success = function () { 
-                    alert('Message sent successfully'); 
-                };
-                var error = function (e) { 
-                    alert('Message Failed:' + e); 
-                };
-                sms.send(number, message, intent, success, error);
-                /* $.post('http://www.presmia.com/app/send-data.php', { 
-                    body: 'Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value,
-                    email: 'carla.fassoni@gmail.com', 
-                    }, function (html) { 
-                        var response = html; 
-                        if ( response == "success" ) {
-                            
-                        } else {
-                            return false; 
-                        }
-                    }
-                );  */
-                console.log('Enviar ayuda a: '+ document.getElementById("selDirec").value +' en ' + document.getElementById("selTime").value);
-                //
-                event.preventDefault();
-            });
-            
-            // --- --- 
-            $('#registerForm').bootstrapValidator({
-                container: '#messko',
-                feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                submitButtons: 'button[type="submit"]',
-                fields: {
-                    cliente: {
-                        validators: {
-                            notEmpty: {
-                                message: 'ID Cliente es obligatorio.'
-                            }
-                        }
-                    },
-                    nombre: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Campo Nombre es obligatorio.'
-                            }
-                        }
-                    },
-                    apellido: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Campo Apellido es obligatorio.'
-                            }
-                        }
-                    },
-                    celular: {
-                        validators: {
-                            digits: {
-                                message: 'N&uacute;mero de celular puede contener solo dígitos.'
-                            },
-                            notEmpty: {
-                                message: 'N&uacute;mero de celular obligatorio.'
-                            }
-                        }
-                    },
-                    dir1: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Campo Direcci&oacute; 1 es obligatorio.'
-                            }
-                        }
-                    },
-                    
-                    /*   --- solo la Dir 1 es obligatoria --- 
-                    dir2: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Campo Direcci&oacute; 2 es obligatorio.'
-                            }
-                        }
-                    },
-                    dir3: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Campo Direcci&oacute; 3 es obligatorio.'
-                            }
-                        }
-                    }*/ 
-                    
-                } // fields 
-            })  // validator 
-            
-            .on('error.validator.bv', function(e, data) {
-                // $(e.target)    --> The form instance
-                // data.field     --> The field name
-                // data.element   --> The field element
-                // data.validator --> The validator name
-
-                // Do something ...
-                // si hubo errores matener nav Profile. 
-                $('#myTab a[href="#profile"]').tab('show');                
-            })
-
-            .on('success.form.bv', function(e) {
-                // The e parameter is the same as one
-                // in the error.validator.bv event above
-
-                // Do something ...
-                // si NO hubo errores, guardar y mostrar nav Home. 
-                save_config();   
-                // mostrar mensaje OK 
-                //e.preventDefault();
-            });        
-            
-            
-        }  // function 
-        );
-            
-        /* // ELIMINAR 
-        $("#alert-mess-ok").hide(); 
-        $('#alert-mess-ok').addClass('hidden');
-        $('#alert-mess-ok').removeClass('hidden');
-        
-        console.log("luego de remove hidden");
-            
-        $(".alert").alert();
-        */
-        
-
-
-        </script>
+        <script type="text/javascript" charset="utf-8" src="js/app.nic.js"></script>
         
 
     </head>
@@ -353,7 +44,7 @@
     <body role="document">
         
         <!-- Barra Nav -->
-        <div class="navbar navbar-default" role="navigation">
+        <div class="navbar navbar-default" role="navigation" data-role="header">
             <div class="container-fluid" id="titulo">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -362,10 +53,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Home Safe</a>
-                    <!--<ul class="nav navbar-nav" role="tablist">
+                    <span class="navbar-brand">Home Safe</span>
+                    <!--<ul class="nav navbar-nav" role="tablist">    <a class="navbar-brand" href="#"></a>
                         <li><h3></h3>
-                        <p>(Un servicio de MABRI S.A.)</p></li>
+                        <p>(Un servicio de MABRI S.A.)</p></li>   <img src="img/logo-MAWE.png" alt="" class="img-responsive">
                     </ul>-->
                 </div>
                 <div class="navbar-collapse collapse">
@@ -378,24 +69,23 @@
             </div>
         </div>
         
+
         
-        <div class="container-fluid">
-            <div id="alert-saved-ok" class="alert alert-success alert-block hidden" >
-                <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
-                <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
-                Datos guardados.
-            </div>    
-            <div id="alert-sent-ok" class="alert alert-success alert-block hidden" >
-                <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
-                <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
-                Alerta enviada.
-            </div> 
-        </div>
-        
-        
-        <div class="tab-content">
+        <div class="tab-content" data-role="content">
             <!-- Mensajes -->
-          
+            <div class="container-fluid">
+                <div id="alert-saved-ok" class="alert alert-success alert-block hidden" >
+                    <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+                    <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+                    Datos guardados.
+                </div>    
+                <div id="alert-sent-ok" class="alert alert-success alert-block hidden" >
+                    <a class="close" data-dismiss="alert" href="#">&#x2716;</a>
+                    <!--<strong>Well done!</strong> Sus datos se han guardado exitosamente!-->
+                    Alerta enviada.
+                </div> 
+            </div>      
+            <!-- Mensajes -->
             <div class="container-fluid">
                 <div class="alert alert-danger hidden" role="alert" id="alert-messko">
                     <!--<strong>Oh snap!</strong> Error al guardar sus datos.-->
@@ -408,7 +98,7 @@
                     <form class="form-horizontal" role="form" method="post" action="?send=ok" id="form-alerta">
                     <!--<form class="form-horizontal" role="form" id="form-alerta">  -->
                         <div class="form-group">
-                            <label for="exampleInputPassword1" class="col-xs-2 control-label">Direcci&oacute;n:</label>
+                            <label for="selDirec" class="col-xs-2 control-label">Direcci&oacute;n:</label>
                             <div class="col-xs-10">
                                 <select class="form-control" id="selDirec" name="selDirec">
                                 </select>
@@ -416,9 +106,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1" class="col-xs-2 control-label">Tiempo:</label>
+                            <label for="selTime" class="col-xs-2 control-label">Tiempo:</label>
                             <div class="col-xs-10">
-                                <select class="form-control" id="selTime">
+                                <select class="form-control" id="selTime" name="selTime">
                                     <option>10 min</option>
                                     <option>15 min</option>
                                     <option>20 min</option>
@@ -443,7 +133,7 @@
             <div class="tab-pane" id="profile">
                 <div class="container-fluid" id="setup">
                     <h4>Complete la siguiente informaci&oacute;n por &uacute;nica vez:</h4>
-                    <form id="registerForm" class="form-horizontal" role="form" method="post" action="?save=ok">
+                    <form id="form-register" class="form-horizontal" role="form" method="post" action="?save=ok">
                         <!-- #messages is where the messages are placed inside -->
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
@@ -451,61 +141,61 @@
                             </div>
                         </div>   
                         <div class="form-group">
-                            <label for="lbidcliente" class="col-xs-2 control-label">Id.Cliente</label>
+                            <label for="inputCliente" class="col-xs-2 control-label">Id.Cliente</label>
                             <div class="col-xs-10">
-                                <input type="text" class="form-control" id="inputCliente" name="cliente"name placeholder="Enter ID">
+                                <input type="text" class="form-control" id="inputCliente" name="inputCliente" placeholder="Enter ID">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lbnombre" class="col-xs-2 control-label">Nombre</label>
+                            <label for="inputNombre" class="col-xs-2 control-label">Nombre</label>
                             <div class="col-xs-10">
-                                <input type="text" class="form-control" id="inputNombre" name="nombre" placeholder="Enter Nombre">
+                                <input type="text" class="form-control" id="inputNombre" name="inputNombre" placeholder="Enter Nombre">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lbapellido" class="col-xs-2 control-label">Apellido</label>
+                            <label for="inputApellido" class="col-xs-2 control-label">Apellido</label>
                             <div class="col-xs-10">
-                                <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Enter Apellido">
+                                <input type="text" class="form-control" id="inputApellido" name="inputApellido" placeholder="Enter Apellido">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lbcelular" class="col-xs-2 control-label">Celular</label>
+                            <label for="inputCelular" class="col-xs-2 control-label">Celular</label>
                             <div class="col-xs-10">
-                                <input type="tel" class="form-control" id="inputCelular" name="celular" placeholder="Nro Celular">
+                                <input type="tel" class="form-control" id="inputCelular" name="inputCelular" placeholder="Nro Celular">
                             </div>
                         </div>
 
                         <h4>Direcciones de acuda:</h4>
                         <div class="form-group">
-                            <label for="lbdir1" class="col-xs-2 control-label">Dir 1</label>
+                            <label for="inputDir1" class="col-xs-2 control-label">Dir 1</label>
                             <div class="col-xs-10">
-                                <input type="text" class="form-control" id="inputDir1" name="dir1" placeholder="">
+                                <input type="text" class="form-control" id="inputDir1" name="inputDir1" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lbdir2" class="col-xs-2 control-label">Dir 2</label>
+                            <label for="inputDir2" class="col-xs-2 control-label">Dir 2</label>
                             <div class="col-xs-10">
-                                <input type="text" class="form-control" id="inputDir2" name="dir2" placeholder="">
+                                <input type="text" class="form-control" id="inputDir2" name="inputDir2" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lbdir3" class="col-xs-2 control-label">Dir 3</label>
+                            <label for="inputDir3" class="col-xs-2 control-label">Dir 3</label>
                             <div class="col-xs-10">
-                                <input type="text" class="form-control" id="inputDir3" name="dir3" placeholder="">
+                                <input type="text" class="form-control" id="inputDir3" name="inputDir3" placeholder="">
                             </div>
                         </div>
                         <div class="col-xs-offset-5 col-xs-7">
-                            <button type="submit" class="btn btn-primary" >Guardar</button>  <!-- onclick="save_config()" -->
+                            <button type="submit" class="btn btn-primary" id="btn-save" >Guardar</button>  <!-- onclick="save_config()" -->
                         </div>
                     </form>
                     
                     <!-- Botones -->
-                    <div class="container-fluid" id="exec">
+                    <!--<div class="container-fluid" id="exec">
                         <div class="col-xs-offset-5 col-xs-7">
-                            <button type="button" class="btn btn-primary" onclick="borrarStorage()">Borrar Storage</button>
+                            <button type="button" class="btn btn-primary" onclick="borrarStorage()">Borrar Storage</button>   
                             <button type="button" class="btn btn-primary" onclick="closeApp()">Salir</button>
                         </div>
-                    </div>                    
+                    </div> -->                
                 </div>
             </div>
                 

@@ -17,6 +17,12 @@
     </author>
 
     <content src="index.html" />
+    
+    <preference name="orientation" value="landscape" />
+    <preference name="fullscreen" value="false" />
+    <preference name="target-device" value="universal" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="android-installLocation" value="auto" />
         
     <gap:platform name="ios" />
     <gap:platform name="android" />
@@ -26,5 +32,7 @@
     <gap:plugin name="tr.bel.mamak.sms_plagin" version="0.1.0" />
     
     <icon src="icon.png" width="60" height="60" />
+    
+    <access origin="*" />
 
 </widget>
