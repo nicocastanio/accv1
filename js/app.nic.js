@@ -110,6 +110,7 @@
             
 // 
 var enviarEmail = function(smsBody) { 
+
     // enviar 
     var smsBody = 'ID Cliente: ' + $('#inputCliente').val() + ' / ' + $('#inputNombre').val() +' '+ $('#inputApellido').val() + ' / Direccion: ' +  $('select[name=selDirec] option:selected').text() + ' en ' + $("#selTime option:selected").val();
     
@@ -135,9 +136,9 @@ var enviarEmail = function(smsBody) {
 // 
 var enviarSMS = function(smsBody) {
     
-    var celNumer = "1131644089"; 
+    var celNumer = "+5491131644089"; 
     var celTxt = smsBody; 
-    var intent = "INTENT"; //leave empty for sending sms using default intent
+    //var intent = "INTENT"; //leave empty for sending sms using default intent
     var success = function () { 
         alert('Message sent successfully'); 
     };
