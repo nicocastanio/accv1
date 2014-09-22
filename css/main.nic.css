@@ -1,3 +1,13 @@
 .hide-me{
 	display: none;    
 }
+body {
+    background-color: #BC4D4D;  /*  #AD3939;  */
+}
+.navbar{
+    background-color: #901111;
+}
+.titulo{
+    color: black;
+    
+}
