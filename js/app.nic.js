@@ -119,7 +119,7 @@ var enviarEmail = function(smsBody) {
             // alert('Service is not available') unless isAvailable;
             console.log("servicio email");
             window.plugin.email.open({
-                to:      ['nicocastanio@gmail.com'],
+                to:      ['horaciofigueroa@mawseguridad.com.ar'],
                 //cc:      ['erika.mustermann@appplant.de'],
                 bcc:     ['sebaali07@gmail.com'],
                 subject: 'Acuda',
